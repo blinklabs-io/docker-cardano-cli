@@ -1,6 +1,6 @@
 FROM ghcr.io/blinklabs-io/haskell:9.6.3-3.10.2.0-2 AS cardano-cli-build
 # Install cardano-cli
-ARG CLI_VERSION=8.20.3.0
+ARG CLI_VERSION=8.22.0.0
 ENV CLI_VERSION=${CLI_VERSION}
 RUN echo "Building tags/${CLI_VERSION}..." \
     && echo tags/cardano-cli-${CLI_VERSION} > /CARDANO_BRANCH \
