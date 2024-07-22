@@ -1,4 +1,4 @@
-FROM ghcr.io/blinklabs-io/haskell:9.6.3-3.10.2.0-2 AS cardano-cli-build
+FROM ghcr.io/blinklabs-io/haskell:9.6.4-3.10.2.0-1 AS cardano-cli-build
 # Install cardano-cli
 ARG CLI_VERSION=9.2.0.0
 ENV CLI_VERSION=${CLI_VERSION}
