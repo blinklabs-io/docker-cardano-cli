@@ -1,4 +1,4 @@
-FROM ghcr.io/blinklabs-io/haskell:9.12.3-3.14.2.0-1 AS cardano-cli-build
+FROM ghcr.io/blinklabs-io/haskell:9.6.7-3.12.1.0-4 AS cardano-cli-build
 # Install cardano-cli
 ARG CLI_VERSION=11.4.0.0
 ENV CLI_VERSION=${CLI_VERSION}
@@ -21,14 +21,15 @@ RUN echo "Building tags/${CLI_VERSION}..." \
     && rm -rf /root/.cabal/store/ghc-${GHC_VERSION}
 
 FROM debian:bookworm-slim AS cardano-cli
-ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
-ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
+ENV LD_LIBRARY_PATH="/usr/local/lib"
+ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
 COPY --from=cardano-cli-build /usr/local/lib/ /usr/local/lib/
 COPY --from=cardano-cli-build /usr/local/include/ /usr/local/include/
 COPY --from=cardano-cli-build /root/.local/bin/cardano-* /usr/local/bin/
 RUN apt-get update -y && \
   apt-get install -y \
     bc \
+    ca-certificates \
     curl \
     iproute2 \
     jq \
