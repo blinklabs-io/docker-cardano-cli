@@ -22,8 +22,10 @@ if [[ -z ${CARDANO_NODE_SOCKET_PATH} ]]; then
 fi
 
 # Select the network named by NETWORK so commands need no --testnet-magic or
-# --mainnet. The magic values are those of the networks docker-cardano-node
-# manages. An explicit CARDANO_NODE_NETWORK_ID or network flag takes precedence.
+# --mainnet. The names are those accepted by run-network in docker-cardano-node
+# and the magic values are the networkMagic in each network's
+# shelley-genesis.json from cardano-configs. An explicit
+# CARDANO_NODE_NETWORK_ID or network flag takes precedence.
 if [[ -n ${NETWORK} && -z ${CARDANO_NODE_NETWORK_ID} ]]; then
 	case ${NETWORK} in
 		mainnet) export CARDANO_NODE_NETWORK_ID=mainnet ;;
