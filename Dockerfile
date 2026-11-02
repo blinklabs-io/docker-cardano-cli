@@ -53,4 +53,5 @@ RUN apt-get update -y && \
     zlib1g && \
   rm -rf /var/lib/apt/lists/* && \
   chmod +x /usr/local/bin/*
-ENTRYPOINT ["/usr/local/bin/cardano-cli"]
+COPY bin/ /usr/local/bin/
+ENTRYPOINT ["/usr/local/bin/entrypoint"]

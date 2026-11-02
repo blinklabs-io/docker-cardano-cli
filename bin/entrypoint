@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+[[ -n ${DEBUG} ]] && set -x
+
+set -e
+
+exec /usr/local/bin/run-cli "${@}"
