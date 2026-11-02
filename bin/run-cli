@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+[[ -n ${DEBUG} ]] && set -x
+
+set -e
+
+# Accept an optional leading "cli" so the same arguments work against the
+# docker-cardano-node image.
+if [[ ${1} == cli ]]; then
+	shift
+fi
+
+# The node socket defaults match docker-cardano-node, so a socket volume shared
+# with a node container is found without extra configuration. Standalone, a
+# socket mounted at /ipc/node.socket is found without setting NETWORK.
+if [[ -z ${CARDANO_NODE_SOCKET_PATH} ]]; then
+	if [[ -n ${NETWORK} || -e /ipc/node.socket ]]; then
+		export CARDANO_NODE_SOCKET_PATH=/ipc/node.socket
+	else
+		export CARDANO_NODE_SOCKET_PATH=/opt/cardano/ipc/socket
+	fi
+fi
+
+# Select the network named by NETWORK so commands need no --testnet-magic or
+# --mainnet. The magic values are those of the networks docker-cardano-node
+# manages. An explicit CARDANO_NODE_NETWORK_ID or network flag takes precedence.
+if [[ -n ${NETWORK} && -z ${CARDANO_NODE_NETWORK_ID} ]]; then
+	case ${NETWORK} in
+		mainnet) export CARDANO_NODE_NETWORK_ID=mainnet ;;
+		preprod) export CARDANO_NODE_NETWORK_ID=1 ;;
+		preview) export CARDANO_NODE_NETWORK_ID=2 ;;
+		sanchonet) export CARDANO_NODE_NETWORK_ID=4 ;;
+		dijkstra) export CARDANO_NODE_NETWORK_ID=6 ;;
+	esac
+fi
+
+exec /usr/local/bin/cardano-cli "${@}"

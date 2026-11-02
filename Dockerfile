@@ -26,6 +26,7 @@ ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig"
 COPY --from=cardano-cli-build /usr/local/lib/ /usr/local/lib/
 COPY --from=cardano-cli-build /usr/local/include/ /usr/local/include/
 COPY --from=cardano-cli-build /root/.local/bin/cardano-* /usr/local/bin/
+COPY bin/ /usr/local/bin/
 RUN apt-get update -y && \
   apt-get install -y \
     bc \
@@ -53,4 +54,4 @@ RUN apt-get update -y && \
     zlib1g && \
   rm -rf /var/lib/apt/lists/* && \
   chmod +x /usr/local/bin/*
-ENTRYPOINT ["/usr/local/bin/cardano-cli"]
+ENTRYPOINT ["/usr/local/bin/entrypoint"]
